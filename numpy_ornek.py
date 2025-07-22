@@ -28,3 +28,36 @@ for x in range(0, 7):
 
 print("Haftanın en sıcak derecesi: ", weather_arr.max().astype(int))
 print("Haftanın en soğuk derecesi: ", weather_arr.min().astype(int))
+
+# weather arrayin 3. gününün 12.00 ile 18.00 saatlerindeki sıcaklığı yazdırma
+print("3. Gün 12-18 saatleri arası sıcaklıklar: ", weather_arr[2][11:18].astype(int))
+
+# 5. günün ortalama sıcaklığı 30’dan büyükse “sıcak gün”, değilse “ılıman gün” yazdır
+if weather_arr[4].astype(int).mean() > 30:
+    print("5. gün sıcak gün")
+else:
+    print("5. gün ılıman gün")
+
+# sıcaklığı 35 dereceden fazla olan saat sayısını bul
+count = 0
+for x in range(7):
+    for y in range(24):
+        if weather_arr[x][y] > 35:
+            print(f"{x + 1}. gün {y + 1} saat sıcaklıgı:", weather_arr[x][y])
+            count += 1
+print("haftalık 35 dereceden büyük olan saatlerin sayısı:", count)
+
+# -kısa yöntem-
+count2 = np.sum(weather_arr > 35)
+print("haftanın 35 dereceden büyük saatlerinin sayısı:", count2)
+
+# Haftalık sıcaklık ortalaması hesapla, Günlük ortalamaların standart sapmasını bul
+print("haftalık sıcaklık ortalaması:",  weather_arr.astype(int).mean())
+for x in range(7):
+    print("Günlük standart sapma:",  weather_arr[x].astype(int).std())
+
+# 1., 4. ve 6. günleri tek array olarak al ve yazdır
+birlesik_arr = np.stack((weather_arr[0], weather_arr[3], weather_arr[4]))
+birlesik_arr2 = np.hstack((weather_arr[0], weather_arr[3], weather_arr[4]))
+print("birleşmiş array:\n", birlesik_arr.astype(int))
+print("birleşmiş yan yana array:\n", birlesik_arr2.astype(int))
