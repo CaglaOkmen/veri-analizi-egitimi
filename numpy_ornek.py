@@ -57,7 +57,7 @@ for x in range(7):
     print("Günlük standart sapma:",  weather_arr[x].astype(int).std())
 
 # 1., 4. ve 6. günleri tek array olarak al ve yazdır
-birlesik_arr = np.stack((weather_arr[0], weather_arr[3], weather_arr[4]))
+birlesik_arr = np.stack((weather_arr[0], weather_arr[3], weather_arr[4])) #vstack da aynı işlevli
 birlesik_arr2 = np.hstack((weather_arr[0], weather_arr[3], weather_arr[4]))
-print("birleşmiş array:\n", birlesik_arr.astype(int))
+print("birleşmiş alt alta array:\n", birlesik_arr.astype(int)) 
 print("birleşmiş yan yana array:\n", birlesik_arr2.astype(int))
