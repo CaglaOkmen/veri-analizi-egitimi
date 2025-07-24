@@ -29,4 +29,4 @@ df2 = pd.read_csv('weather.csv', header=None)
 print("Weather dosyası:\n", df2.head(3))
 print("Weather dosyas bilgisi:\n", df2.info())
 
-print("Günlerin sıcaklık ortalamaları:\n", df2.mean(axis=1))
+print("Günlerin sıcaklık ortalamaları:\n", df2.mean(axis=1)) # axis 1 olunca satırlar, boş yanı 0 a eşit ise sütunlar kullanılır
