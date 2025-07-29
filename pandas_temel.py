@@ -25,8 +25,21 @@ print("aa kitabının fiyatı: ", df.iloc[0, 1])
 print("ff kitabının fiyatı: ", df.loc[5, 'cost'])
 
 # 3. Bir .csv dosyası oku ve analiz et
-df2 = pd.read_csv('weather.csv', header=None)
-print("Weather dosyası:\n", df2.head(3))
+df2 = pd.read_csv('weather.csv', header=None).astype(int)
+print("Weather dosyası:\n", df2.head(3)) # ilk 3'ü yazdırılır
 print("Weather dosyas bilgisi:\n", df2.info())
 
 print("Günlerin sıcaklık ortalamaları:\n", df2.mean(axis=1)) # axis 1 olunca satırlar, boş yanı 0 a eşit ise sütunlar kullanılır
+print("30 derece üstü sıcaklıklar:", df2[df2 > 30]) # 30 derece ve üstü yazdırılır altta kalan değerler boş döner.
+
+# Eksik veri kontrolü
+print("Eksik veri var mi", df2.isnull().sum())
+df3 = df2[df2 > 30]
+print("Eksik veri var mi", df3.isnull().sum())
+
+# Yeni sütun ekleme
+df2.index = ['Pazartesi', 'Sali', 'Carsamba', 'Persembe', 'Cuma', 'Cumartesi', 'Pazar']
+df2["Ort Sicaklik"] = df2.mean(axis=1)
+df2["Durum"] = ["Sicak" if ort > 26.3 else "Ilıman" for ort in df2["Ort Sicaklik"]]
+print(df2.head(7))
+
