@@ -33,13 +33,34 @@ print("Günlerin sıcaklık ortalamaları:\n", df2.mean(axis=1)) # axis 1 olunca
 print("30 derece üstü sıcaklıklar:", df2[df2 > 30]) # 30 derece ve üstü yazdırılır altta kalan değerler boş döner.
 
 # Eksik veri kontrolü
-print("Eksik veri var mi", df2.isnull().sum())
+print("Eksik veri var mi\n", df2.isnull().sum())
 df3 = df2[df2 > 30]
-print("Eksik veri var mi", df3.isnull().sum())
+print("Eksik veri var mi\n", df3.isnull().sum())
 
 # Yeni sütun ekleme
 df2.index = ['Pazartesi', 'Sali', 'Carsamba', 'Persembe', 'Cuma', 'Cumartesi', 'Pazar']
-df2["Ort Sicaklik"] = df2.mean(axis=1)
-df2["Durum"] = ["Sicak" if ort > 26.3 else "Ilıman" for ort in df2["Ort Sicaklik"]]
+df2["Ort Sıcaklık"] = df2.mean(axis=1)
+df2["Durum"] = ["Sicak" if ort > 26.25 else "Ilıman" for ort in df2["Ort Sıcaklık"]]
 print(df2.head(7))
+print("sıralı sıcaklık\n", df2["Ort Sıcaklık"].sort_values()) # Sıcaklık ortalmalarına göre sıralama
+print("Sicak Günler Filtrelenmiş: \n", df2[df2["Durum"].isin(['Sicak'])]) # df[df["Stun ismi"].isin(["filtrelenecek içerik"])]
 
+# 4. Fltreleme Yöntemleri
+# Birden fazla koşulla seçim yapma.
+print("Saat 8 de 25 dereceden yüksek ve Ilıman günler:\n", df2[(df2[8] > 25) & (df2["Durum"] == "Ilıman")])
+
+# Belirli sütunları şeçip filtreleme
+print("12 ye kadar olan saatlerdeki sıcaklıklar\n", df2.loc[: , 0:12])
+print("Ort sıcaklığı 26.3 den büyük olan günerin ort sıcaklık ve durum bilgisi:\n", df2.loc[df2["Ort Sıcaklık"] < 26.3, ["Ort Sıcaklık", "Durum"]])
+
+# query sütun isimleri ile sayı uyuşmazlığı yaşadığı için hata veriyordu bu yüzden stun isimlerini güncellendi
+df2.columns = [f's{i}' for i in range(24)] + ['Ort Sıcaklık', 'Durum']
+print("8. saat 12. saatten daha sıcak olduğu ve durumu sıcak olan günler:\n", df2.query("s8 > s12 and Durum == 'Sicak'"))
+
+# Gruplama
+print("Durumunların ortalamaları:\n", df2.groupby('Durum').mean()) # df2.groupby('Durum')["Ort Sıcaklık"].mean():  Durum -Ilıman    25.958333 -Sicak     26.406250
+
+# Grup içi işlemler
+print("Drumların standart sapma max ve minleri\n", df2.groupby('Durum')['s5'].agg(['min', 'max', 'mean', 'std', 'sum', 'size']))
+print(df2.groupby('Durum').agg({'s3': ['min', 'max'], 'Ort Sıcaklık': ['mean']}))
+print(df2.groupby("Durum")['s3'].agg(lambda x: min(x) + 2)) # 3. saatteki min değere 2 eklenmiş hali
